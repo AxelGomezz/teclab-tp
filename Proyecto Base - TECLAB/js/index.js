@@ -6,9 +6,23 @@ retornarCardHtml = (producto) => {
                 <div class="card-name">${producto.nombre}</div>
                 <div class="card-price">${producto.precio}</div>
                 <div class="card-button">
-                    <button class="button button-outline button-add" id="" title="Clic para agregar al carrito">+</button>
+                    <button class="button button-outline button-add" id="producto-${producto.id}" title="Clic para agregar al carrito">+</button>
                 </div>
             </div>`
+}
+
+const activarClickEnBotones = () => {
+    const botonesAgregar = document.querySelectorAll('button.button-outline.button-add');
+    if (botonesAgregar !== null) {
+        botonesAgregar.forEach((button) => {
+            // Cambiamos el listener para usar el id del botón
+            button.addEventListener('click', (e) => {
+                // Extraemos el ID del producto desde el ID del botón
+                const frutaId = e.target.id.split('-')[1]; // "producto-1" -> "1"
+                agregarAlCarrito(frutaId);
+            })
+        })
+    }
 }
 
 const cargarProductos = (array) => {
@@ -16,6 +30,7 @@ const cargarProductos = (array) => {
         array.forEach(producto => {
             container.innerHTML += retornarCardHtml(producto)
         });
+        activarClickEnBotones()
     }
 }
 
